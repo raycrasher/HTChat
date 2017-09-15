@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HTChat.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,21 +19,38 @@ namespace HTChat.Views
     /// <summary>
     /// Interaction logic for ChatView.xaml
     /// </summary>
-    public partial class ChatView : Page
+    public partial class ChatView : UserControl
     {
+        private ChatViewModel _model;
+
         public ChatView()
         {
             InitializeComponent();
+            _model = (ChatViewModel)DataContext;
+            ChatBox.Document = new FlowDocument();
+            _model.ChatDocument = ChatBox.Document;
+        }
+        
+        private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && !(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
+            {
+                _model.SendMessage(InputBox.Document);
+                e.Handled = true;
+                ChatBox.ScrollToEnd();
+            }
+        }
+        private void Grid_Drop(object sender, DragEventArgs e)
+        {
+            foreach (var fmt in e.Data.GetFormats())
+            {
+                ChatBox.Document.Blocks.Add(new Paragraph(new Run(fmt)));
+            }
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs e)
+        private void Grid_PreviewDragOver(object sender, DragEventArgs e)
         {
-
-        }
-
-        private void OnDrop(object sender, DragEventArgs e)
-        {
-            
+            e.Handled = true;
         }
     }
 }

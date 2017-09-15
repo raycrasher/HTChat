@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HTChat.Controls
+namespace HTChat.Models
 {
-    class HyperlinkChatItemBlock: ChatItemBlock
+    class GroupChat
     {
-        public string Link { get; set; }
     }
 }

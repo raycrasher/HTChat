@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HTChat.Models;
+using HTChat.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +15,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HTChat.Controls
+namespace HTChat.Views
 {
     /// <summary>
-    /// Interaction logic for ChatControl.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class ChatControl : UserControl
+    public partial class ContactsView : UserControl
     {
-        public ChatControl()
+        public ContactsView()
         {
             InitializeComponent();
         }
+
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HTChat.Controls
+namespace HTChat.Models
 {
-    public class TextChatItemBlock: ChatItemBlock
+    class Group
     {
+        public List<Contact> Contacts { get; set; }
     }
 }

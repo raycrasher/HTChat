@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HTChat.Controls
+namespace HTChat.Models
 {
-    public abstract class ChatItemBlock
+    class SingleChat
     {
-        public string Text { get; set; }
     }
 }

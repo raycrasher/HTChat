@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HTChat.ViewModel
+namespace HTChat.ViewModels
 {
-    class LoginViewModel: ViewModelBase
+    class GroupChatViewModel: ChatViewModel
     {
+        
     }
 }

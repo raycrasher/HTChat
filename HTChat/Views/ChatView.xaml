@@ -1,22 +1,28 @@
-﻿<Page x:Class="HTChat.Views.ChatView"
+﻿<UserControl x:Class="HTChat.Views.ChatView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HTChat.Views"
-      xmlns:controls="clr-namespace:HTChat.Controls"
+      
+      xmlns:vm="clr-namespace:HTChat.ViewModels"
       mc:Ignorable="d" 
+      DataContext="{Binding}"
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="ChatView">
+             d:DataContext="{d:DesignInstance Type=vm:SingleChatViewModel, IsDesignTimeCreatable=True}"
+             >
 
-    <Grid>
+    <Grid DragDrop.PreviewDragOver="Grid_PreviewDragOver" DragDrop.Drop="Grid_Drop" AllowDrop="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto" MaxHeight="300"/>
         </Grid.RowDefinitions>
-        <controls:ChatControl Grid.Row="1"/>
-        <TextBox Grid.Row="3" AcceptsTab="True" AcceptsReturn="True" KeyUp="OnKeyUp" DragDrop.Drop="OnDrop"/>
+        <Grid Grid.Row="0">
+            <Label Content="{Binding Contact.Jid}" />
+        </Grid>
+        <RichTextBox Name="ChatBox" Grid.Row="1" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+        <RichTextBox Name="InputBox" Grid.Row="3" AcceptsTab="True" AcceptsReturn="True" PreviewKeyDown="OnPreviewKeyDown" BorderBrush="DarkGray" Margin="2" VerticalAlignment="Bottom"/>
 
     </Grid>
-</Page>
+</UserControl>

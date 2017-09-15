@@ -21,9 +21,14 @@ namespace HTChat
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        public static MainWindow Instance { get; private set; }
+
         public MainWindow()
         {
+            if (Instance != null)
+                throw new NotSupportedException("Multiple main windows not supported.");
             InitializeComponent();
+            Instance = this;
         }
     }
 }

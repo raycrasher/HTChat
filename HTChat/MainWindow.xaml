@@ -5,11 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:m="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:HTChat"
+        xmlns:v="clr-namespace:HTChat.Views"
+        xmlns:vm="clr-namespace:HTChat.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="525" Width="350"
-        DataContext="{Binding Main, Source={StaticResource Locator}}"
-               >
-    <Grid>
-        
-    </Grid>
+        Title="HTChat" Height="768" Width="1366" WindowState="Maximized"
+        DataContext="{Binding Source={StaticResource Locator}}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <v:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MainViewModel}">
+            <v:MainView/>
+        </DataTemplate>
+    </Window.Resources>
+    <m:ContentControlEx Content="{Binding CurrentMainViewModel}"/>
 </m:MetroWindow>
