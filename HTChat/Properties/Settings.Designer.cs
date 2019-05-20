@@ -25,13 +25,37 @@ namespace HTChat.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastUsername {
+        [global::System.Configuration.DefaultSettingValueAttribute("htchat")]
+        public string FtpUsername {
             get {
-                return ((string)(this["LastUsername"]));
+                return ((string)(this["FtpUsername"]));
             }
             set {
-                this["LastUsername"] = value;
+                this["FtpUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("htchat")]
+        public string FtpPassword {
+            get {
+                return ((string)(this["FtpPassword"]));
+            }
+            set {
+                this["FtpPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ftp://192.168.212.123/hots1/HTChat")]
+        public string FtpHost {
+            get {
+                return ((string)(this["FtpHost"]));
+            }
+            set {
+                this["FtpHost"] = value;
             }
         }
         
@@ -49,13 +73,13 @@ namespace HTChat.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastPass {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RememberLogin {
             get {
-                return ((string)(this["LastPass"]));
+                return ((bool)(this["RememberLogin"]));
             }
             set {
-                this["LastPass"] = value;
+                this["RememberLogin"] = value;
             }
         }
     }

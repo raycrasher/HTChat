@@ -5,31 +5,82 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HTChat.Views"
              xmlns:vm="clr-namespace:HTChat.ViewModels"
+             xmlns:model="clr-namespace:HTChat.Models"
              mc:Ignorable="d" 
-             DataContext="{Binding Source={StaticResource Locator}, Path=CurrentMainViewModel}"
-             d:DataContext="{Binding Source={d:DesignInstance Type={x:Type vm:MainViewModel}}}"
              d:DesignHeight="768" d:DesignWidth="1366">
-    
-    <Grid>
+    <UserControl.Resources>
+        <vm:MainViewModel x:Key="Model"/>
+    </UserControl.Resources>
+    <Grid DataContext="{StaticResource Model}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="322*"/>
+            <ColumnDefinition Width="675*"/>
+            <ColumnDefinition Width="369*"/>
         </Grid.ColumnDefinitions>
-
-        <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <local:ContactsView Grid.Column="0"/>
+        <StackPanel  Grid.Column="0">
+            <GroupBox Header="Active Chats">
+                <ListView ItemsSource="{Binding Chats}" BorderThickness="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick"
+                                                  Command="{Binding ShowChat, Source={StaticResource Model}}"
+                                                  CommandParameter="{Binding}"
+                                                  />
+                                </Grid.InputBindings>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="23"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Source="{Binding Contact.Avatar}" Width="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Contact.DisplayName}" VerticalAlignment="Center"/>
+                                <Border Grid.Column="2" CornerRadius="5" Background="{StaticResource AccentBaseColorBrush}" VerticalAlignment="Center" Padding="0" HorizontalAlignment="Center">
+                                    <Label Foreground="{StaticResource IdealForegroundColorBrush}" FontSize="8" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Grid.Column="0" Margin="0" Padding="5 3" Content="{Binding NumUnreadMessages}" Visibility="{Binding NumUnreadMessages, Converter={StaticResource CollapseIfZero}}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </GroupBox>
+            <GroupBox Header="Bookmarks">
+                <StackPanel>
+                    <Button Style="{StaticResource SquareButtonStyle}">Add new group</Button>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"  Grid.Column="2" VerticalAlignment="Stretch">
+            <StackPanel>
+                <Expander Header="Chatrooms" IsExpanded="True">
+                    
+                </Expander>
+                <Expander Header="Users" IsExpanded="True">
+                    <ListBox ItemsSource="{Binding Contacts}" BorderThickness="0" DisplayMemberPath="" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.InputBindings>
+                                        <MouseBinding Gesture="LeftDoubleClick"
+                                                  Command="{Binding StartChatWithContact, Source={StaticResource Model}}"
+                                                  CommandParameter="{Binding}"
+                                                  />
+                                    </Grid.InputBindings>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="23"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto" MaxWidth="300"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="{Binding Avatar}" Width="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Status}" FontStyle="Italic" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Expander>
+            </StackPanel>
         </ScrollViewer>
-        <Grid Grid.Column="1">
-            <Grid.Resources>
-                <DataTemplate DataType="{x:Type vm:SingleChatViewModel}">
-                    <local:ChatView DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}, Path=ActiveChatView}"/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:GroupChatViewModel}">
-                    <local:ChatView DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}, Path=ActiveChatView}"/>
-                </DataTemplate>
-            </Grid.Resources>
-            <ContentControl Content="{Binding ActiveChatView}" />
-        </Grid>
+        <local:ChatView Grid.Column="1" DataContext="{Binding ActiveChat}"/>
     </Grid>
 </UserControl>

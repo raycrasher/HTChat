@@ -4,19 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:m="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:local="clr-namespace:HTChat"
         xmlns:v="clr-namespace:HTChat.Views"
         xmlns:vm="clr-namespace:HTChat.ViewModels"
         mc:Ignorable="d"
-        Title="HTChat" Height="768" Width="1366" WindowState="Maximized"
-        DataContext="{Binding Source={StaticResource Locator}}">
+        Title="HTChat" Height="768" Width="1366">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-            <v:LoginView/>
+        <vm:MainWindowModel x:Key="Model"/>
+        <DataTemplate x:Key="LoginTemplate">
+            <v:LoginView VerticalAlignment="Center"/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:MainViewModel}">
+        <DataTemplate x:Key="MainTemplate">
             <v:MainView/>
         </DataTemplate>
     </Window.Resources>
-    <m:ContentControlEx Content="{Binding CurrentMainViewModel}"/>
+    <Grid DataContext="{StaticResource Model}">
+        <m:ContentControlEx>
+            <m:ContentControlEx.Style>
+                <Style TargetType="{x:Type m:ContentControlEx}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource MainTemplate}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding State}" Value="{x:Static vm:MainWindowState.Login}">
+                            <Setter Property="ContentTemplate" Value="{StaticResource LoginTemplate}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding State}" Value="{x:Static vm:MainWindowState.Main}">
+                            <Setter Property="ContentTemplate" Value="{StaticResource MainTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </m:ContentControlEx.Style>
+        </m:ContentControlEx>
+    </Grid>
 </m:MetroWindow>

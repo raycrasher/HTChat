@@ -1,9 +1,8 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Ioc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -11,42 +10,45 @@ using System.Windows.Input;
 
 namespace HTChat.ViewModels
 {
-    class LoginViewModel: ViewModelBase, INotifyPropertyChanged
+    class LoginViewModel : INotifyPropertyChanged
     {
-        public string Title => "HTChat > Login";
-        public string Username { get; set; } = Properties.Settings.Default.LastUsername;
-        public string Domain { get; set; } = Properties.Settings.Default.LastHost;
-        public bool RememberLogin { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand CmdLogin => new AsyncDelegateCommand(
-            async o =>
-            {
-                await Login(((PasswordBox)o).Password);
-            });
+        public bool LoginEnabled { get; set; } = true;
+        public bool RememberLogin { get; set; } = Properties.Settings.Default.RememberLogin;
+        public string Username { get; set; }
+        public string Host { get; set; } = Properties.Settings.Default.LastHost;
+        public string ErrorMessage { get; private set; }
 
-        public string ErrorMessage { get; set; }
-        
-        public async Task Login(string password)
+        public LoginViewModel()
         {
-            Properties.Settings.Default.LastUsername = Username;
-            Properties.Settings.Default.LastHost = Domain;
-            Properties.Settings.Default.LastPass = password;
-            Properties.Settings.Default.Save();
+            Client = new ChatClient();
+        }
 
-            ErrorMessage = "Logging in...";
-            var client = SimpleIoc.Default.GetInstance<ChatClient>();
-            client.Host = Domain;
-            var result = await client.Login(Username, password);
-
+        public ICommand DoLogin => new DelegateCommand(async o => {
+            
+            LoginEnabled = false;
+            ErrorMessage = "Logging In...";
+            var result = await Client.Login(Host, Username, ((PasswordBox)o).Password);
             if (result)
             {
-                ViewModelLocator.Navigate<MainViewModel>();
+                Properties.Settings.Default.RememberLogin = RememberLogin;
+                if (RememberLogin)
+                {
+                    Properties.Settings.Default.LastHost = Host;
+                    CredentialManager.WriteCredential(Assembly.GetExecutingAssembly().GetName().Name, Username, ((PasswordBox)o).Password);
+                }
+                Properties.Settings.Default.Save();
+                
+                this.FireEvent(new Events.LoginEvent { Client = Client });
             }
             else
             {
-                ErrorMessage = "Login failed: " + client.LastErrorMessage;
+                ErrorMessage = "Login failed.";
+                LoginEnabled = true;
             }
-            
-        }
+        });
+
+        public ChatClient Client { get; private set; }
     }
 }

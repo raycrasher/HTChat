@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace HTChat
-{   
+{
     public class DelegateCommand : ICommand
     {
         private readonly Predicate<object> _canExecute;

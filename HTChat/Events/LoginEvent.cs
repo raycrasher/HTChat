@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HTChat.Models
+namespace HTChat.Events
 {
-    class Group
+    public class LoginEvent: EventArgs
     {
-        public List<Contact> Contacts { get; set; }
+        public ChatClient Client { get; set; }
     }
 }

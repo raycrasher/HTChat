@@ -9712,6 +9712,11 @@
             </remarks>
             </summary>
         </member>
+        <member name="P:agsXMPP.XmppClientConnection.MyServerJID">
+            <summary>
+            The logged on user's current Jid, as reported by the "To" field on the session creation reply IQ.
+            </summary>
+        </member>
         <member name="E:agsXMPP.XmppClientConnection.OnLogin">
             <summary>
             We are authenticated to the server now.

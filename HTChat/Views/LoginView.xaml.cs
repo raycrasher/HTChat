@@ -1,6 +1,8 @@
-﻿using System;
+﻿using HTChat.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,12 +20,18 @@ namespace HTChat.Views
     /// <summary>
     /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    partial class LoginView : UserControl
     {
         public LoginView()
         {
             InitializeComponent();
-            pwBox.Password = Properties.Settings.Default.LastPass;
+            var cred = CredentialManager.ReadCredential(Assembly.GetExecutingAssembly().GetName().Name);
+            if (cred != null)
+            {
+                ((LoginViewModel)FindResource("Model")).Username = cred.UserName;
+                //uName.Text = cred.UserName;
+                pwBox.Password = cred.Password;
+            }
         }
     }
 }

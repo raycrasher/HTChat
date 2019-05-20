@@ -1,28 +1,34 @@
 ﻿<UserControl x:Class="HTChat.Views.ChatView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:HTChat.Views"
-      
-      xmlns:vm="clr-namespace:HTChat.ViewModels"
-      mc:Ignorable="d" 
-      DataContext="{Binding}"
-      d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance Type=vm:SingleChatViewModel, IsDesignTimeCreatable=True}"
-             >
-
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HTChat.Views"
+             mc:Ignorable="d" 
+             DataContextChanged="UserControl_DataContextChanged"
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid DragDrop.PreviewDragOver="Grid_PreviewDragOver" DragDrop.Drop="Grid_Drop" AllowDrop="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="3*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" MaxHeight="300"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Label Content="{Binding Contact.Jid}" />
-        </Grid>
-        <RichTextBox Name="ChatBox" Grid.Row="1" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
-        <RichTextBox Name="InputBox" Grid.Row="3" AcceptsTab="True" AcceptsReturn="True" PreviewKeyDown="OnPreviewKeyDown" BorderBrush="DarkGray" Margin="2" VerticalAlignment="Bottom"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Image Source="{Binding Contact.Photo}" Width="28" Height="28" HorizontalAlignment="Left" Margin=" 5 2"/>
+            <Label Content="{Binding Contact.DisplayName}" ToolTip="{Binding Contact.Jid}"/>
+        </StackPanel>
+        <RichTextBox Name="ChatMessagesBox" Grid.Row="1" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" IsDocumentEnabled="True">
+            <RichTextBox.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Stretch" Value="Uniform"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+        <Label Grid.Row="2" Content="{Binding ChatState, Mode=OneWay}"/>
+        <Border Grid.Row="4" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="2">
+            <TextBox Name="ChatInputBox" AcceptsTab="True" AcceptsReturn="True" PreviewKeyDown="OnPreviewKeyDown" BorderBrush="DarkGray" Margin="2" VerticalAlignment="Bottom" BorderThickness="0"/>
+        </Border>
 
     </Grid>
 </UserControl>

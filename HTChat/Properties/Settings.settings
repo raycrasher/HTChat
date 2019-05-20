@@ -2,14 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HTChat.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="LastUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="FtpUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">htchat</Value>
+    </Setting>
+    <Setting Name="FtpPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">htchat</Value>
+    </Setting>
+    <Setting Name="FtpHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ftp://192.168.212.123/hots1/HTChat</Value>
     </Setting>
     <Setting Name="LastHost" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LastPass" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="RememberLogin" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
